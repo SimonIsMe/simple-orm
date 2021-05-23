@@ -1,0 +1,13 @@
+{
+    "name": "szymon/simple-orm",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "SimpleOrm\\": "src/"
+        }
+    }
+}
