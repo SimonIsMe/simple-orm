@@ -90,7 +90,17 @@ class MysqlOrm implements SqlInterfce
 
         $this->bindParameters($stmt, $parameters);
 
-        if ($stmt->execute() === false) {
+        try {
+            $executeResult = $stmt->execute();
+        } catch (\mysqli_sql_exception $e) {
+            if ($stmt->errno === 1062) {
+                throw new ValueIsNotUniqueException();
+            }
+
+            throw $e;
+        }
+
+        if ($executeResult === false) {
             $errorNo = $stmt->errno;
             $error = $stmt->error;
             $stmt->close();
