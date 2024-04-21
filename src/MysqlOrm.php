@@ -7,7 +7,31 @@ use SimpleOrm\exceptions\ValueIsNotUniqueException;
 
 class MysqlOrm implements SqlInterfce
 {
-    private \mysqli $mysqli;
+    private string $host;
+    private string $username;
+    private string $password;
+    private string $dbName;
+
+    private static ?\mysqli $connection = null;
+
+    private static function getConnection(
+        string $host,
+        string $username,
+        string $password,
+        string $dbName
+    ): \mysqli
+    {
+        if (self::$connection === null) {
+            self::$connection = new \mysqli(
+                $host,
+                $username,
+                $password,
+                $dbName
+            );
+        }
+
+        return self::$connection;
+    }
 
     public function __construct(
         string $host,
@@ -16,12 +40,15 @@ class MysqlOrm implements SqlInterfce
         string $dbName
     )
     {
-        $this->mysqli = new \mysqli(
-            $host,
-            $username,
-            $password,
-            $dbName
-        );
+        $this->host = $host;
+        $this->username = $username;
+        $this->password = $password;
+        $this->dbName = $dbName;
+    }
+
+    private function connection(): \mysqli
+    {
+        return self::getConnection($this->host, $this->username, $this->password, $this->dbName);
     }
 
     /**
