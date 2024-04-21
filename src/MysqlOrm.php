@@ -77,7 +77,7 @@ class MysqlOrm implements SqlInterfce
      */
     public function select(string $sql, array $parameters = []): array
     {
-        $stmt = $this->mysqli->stmt_init();
+        $stmt = $this->connection()->stmt_init();
         if ($stmt->prepare($sql) ===false) {
             throw new OrmException($stmt->error);
         }
@@ -110,7 +110,7 @@ class MysqlOrm implements SqlInterfce
      */
     private function callQuery(string $sql, array $parameters = [])
     {
-        $stmt = $this->mysqli->stmt_init();
+        $stmt = $this->connection()->stmt_init();
         if ($stmt->prepare($sql) ===false) {
             throw new OrmException($stmt->error);
         }
@@ -139,7 +139,7 @@ class MysqlOrm implements SqlInterfce
             throw new OrmException($error);
         }
 
-        $countAffectedRows = $this->mysqli->affected_rows;
+        $countAffectedRows = $this->connection()->affected_rows;
         $insertId = $stmt->insert_id;
 
         $stmt->close();
