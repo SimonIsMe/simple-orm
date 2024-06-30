@@ -72,6 +72,21 @@ class MysqlOrm implements SqlInterfce
         return $out['countAffectedRows'];
     }
 
+    public function beginTransaction(int $flags = 0, ?string $name = null): void
+    {
+        $this->connection()->begin_transaction($flags, $name);
+    }
+
+    public function commitTransaction(int $flags = 0, ?string $name = null): void
+    {
+        $this->connection()->commit($flags, $name);
+    }
+
+    public function rollbackTransaction(int $flags = 0, ?string $name = null): void
+    {
+        $this->connection()->rollback($flags, $name);
+    }
+
     /**
      * @throws OrmException
      */
